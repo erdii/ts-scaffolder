@@ -26,6 +26,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "convict": "^4.3.2",
+    "cross-spawn": "^6.0.5",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {}
