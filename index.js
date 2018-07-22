@@ -44,6 +44,27 @@ function exec(cmd, options, cb) {
 	});
 }
 
+function spawn(cmd, args, options, cb) {
+	const child = child_process.spawn(cmd, args, options);
+
+	child.stdout.on("data", (data) => {
+		console.log(chalk`> {green ${cmd}} ${data.toString()}`);
+	})
+
+	child.stderr.on("data", (data) => {
+		console.error(chalk`> {red ${cmd}} ${data.toString()}`);
+	})
+
+	child.on("exit", (code) => {
+		console.log("exit code", code, typeof code);
+		if (code) {
+			cb(code);
+		} else {
+			cb();
+		}
+	})
+}
+
 async function main() {
 	const projectName = process.argv[2];
 
@@ -66,15 +87,37 @@ async function main() {
 	}
 
 	{
+		console.log(chalk`{blue [ts-scaffolder]} start scaffolding`);
 		const projectFolder = path.join(process.cwd(), projectName);
+
+		console.log(chalk`{blue [ts-scaffolder]} create project folder`);
 		await asyncify(exec, `mkdir "${projectFolder}"`, {});
-		await asyncify(exec, "npm init -y", {
+
+		console.log(chalk`{blue [ts-scaffolder]} init git repo`);
+		await asyncify(spawn, "git", ["init"], {
 			cwd: projectFolder,
 		});
-		await asyncify(exec, "npm i -D ts-scaffolder-scripts", {
+
+		console.log(chalk`{blue [ts-scaffolder]} init npm module`);
+		await asyncify(spawn, "npm", ["init", "-y"], {
 			cwd: projectFolder,
 		});
-		await asyncify(exec, `node_modules/.bin/ts-scaffolder-init${config.get("isWebapp") ? " --iswebapp" : ""} --umdname "${config.get("umdName")}"`, {
+
+		console.log(chalk`{blue [ts-scaffolder]} install ts-scaffolder-scripts`);
+		await asyncify(spawn, "npm", ["i", "-D", "ts-scaffolder-scripts"], {
+			cwd: projectFolder,
+		});
+
+		console.log(chalk`{blue [ts-scaffolder]} init ts-scaffolder-scripts`);
+
+		const initArgs = [];
+		if (config.get("isWebapp")) {
+			initArgs.push("--iswebapp");
+		}
+		initArgs.push("--umdname")
+		initArgs.push(config.get("umdName"));
+
+		await asyncify(spawn, "node_modules/.bin/ts-scaffolder-init", initArgs, {
 			cwd: projectFolder,
 		});
 	}
