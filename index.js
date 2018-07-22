@@ -56,7 +56,6 @@ function spawn(cmd, args, options, cb) {
 	})
 
 	child.on("exit", (code) => {
-		console.log("exit code", code, typeof code);
 		if (code) {
 			cb(code);
 		} else {
