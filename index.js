@@ -71,7 +71,7 @@ async function main() {
 		await asyncify(exec, "npm init -y", {
 			cwd: projectFolder,
 		});
-		await asyncify(exec, "npm i -D /home/erdii/Projects/ts-scaffolder-scripts", {
+		await asyncify(exec, "npm i -D ts-scaffolder-scripts", {
 			cwd: projectFolder,
 		});
 		await asyncify(exec, `node_modules/.bin/ts-scaffolder-init${config.get("isWebapp") ? " --iswebapp" : ""} --umdname "${config.get("umdName")}"`, {
