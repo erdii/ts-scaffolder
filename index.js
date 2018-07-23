@@ -22,6 +22,12 @@ const config = convict({
 		arg: "umdname",
 		env: "UMDNAME",
 	},
+	scripts: {
+		doc: "ts-scaffolder-scripts module name (can possibly include version like this: `ts-scaffolder-scripts@0.0.4` can also be used to bring your own version of the scripts",
+		format: String,
+		default: "ts-scaffolder-scripts",
+		arg: "scripts",
+	}
 })
 
 function asyncify(fn, ...args) {
@@ -60,7 +66,9 @@ async function main() {
 	const projectName = process.argv[2];
 
 	if (!projectName) {
-		console.error(chalk`{bgRed Usage:} ts-scaffolder {yellow project-name} {grey [--iswebapp] [--umdName="{yellow bundleName}"]}`);
+		console.error(chalk`{bgRed Usage:} ts-scaffolder {yellow project-name} {grey [--iswebapp] [--umdName="{yellow bundleName}"] [--scripts="{yellow ts-scaffolder-scripts@0.0.4}"]}`);
+		console.error("\nconfig schema:");
+		console.error(config.getSchemaString());
 		process.exit(1);
 	}
 
@@ -95,7 +103,7 @@ async function main() {
 		});
 
 		console.log(chalk`[{blue ts-scaffolder}] install ts-scaffolder-scripts`);
-		await asyncify(spawn, "npm", ["i", "-D", "ts-scaffolder-scripts"], {
+		await asyncify(spawn, "npm", ["i", "-D", config.get("scripts")], {
 			cwd: projectFolder,
 		});
 

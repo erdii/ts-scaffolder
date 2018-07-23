@@ -10,4 +10,4 @@ scaffold opinionated typescript projects using the infamous rollup bundler
 
 ### usage
 
-`ts-scaffolder project-name [--iswebapp] [--umdName="bundleName"]`
+`ts-scaffolder project-name [--iswebapp] [--umdName="bundleName"] [--scripts="ts-scaffolder-scripts@0.0.4"]`
