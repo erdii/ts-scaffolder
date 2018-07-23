@@ -66,7 +66,7 @@ async function main() {
 	const projectName = process.argv[2];
 
 	if (!projectName) {
-		console.error(chalk`{bgRed Usage:} ts-scaffolder {yellow project-name} {grey [--iswebapp] [--umdName="{yellow bundleName}"] [--scripts="{yellow ts-scaffolder-scripts@0.0.4}"]}`);
+		console.error(chalk`{bgGreen {black Usage:}} ts-scaffolder {yellow project-name} {grey [--iswebapp] [--umdName="{yellow bundleName}"] [--scripts="{yellow ts-scaffolder-scripts@0.0.4}"]}`);
 		console.error("\nconfig schema:");
 		console.error(config.getSchemaString());
 		process.exit(1);
@@ -75,7 +75,7 @@ async function main() {
 	const validationResult = validateNpmPackageName(projectName);
 
 	if (!validationResult.validForNewPackages) {
-		console.error(chalk`{bgRed INVALID} {yellow project-name}`);
+		console.error(chalk`{bgRed {black INVALID}} {yellow project-name}`);
 		console.error(chalk`{yellow project-name} must conform to npm's project name rules: https://www.npmjs.com/package/validate-npm-package-name`);
 		if (validationResult.errors) {
 			validationResult.errors.forEach(err => {
