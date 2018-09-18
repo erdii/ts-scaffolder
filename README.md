@@ -1,3 +1,5 @@
+This was an experiment!
+
 # ts-scaffolder
 
 scaffold opinionated typescript projects using the infamous rollup bundler
